@@ -3,25 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tanisha's Digital Sanctuary</title>
+    <title>Happy International WOMENS day my love my baby girl my Tanisha ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --baby-pink: #fbc2eb;
             --light-yellow: #fef9d7;
             --vibrant-yellow: #ffed4a;
-            --glass: rgba(255, 255, 255, 0.5);
-            --text: #5d5d5d;
             --accent-pink: #ff8fa3;
+            --glass: rgba(255, 255, 255, 0.65);
+            --deep-night: #1a1a2e;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             background: linear-gradient(135deg, var(--baby-pink) 0%, var(--light-yellow) 100%);
-            color: var(--text);
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            overflow-x: hidden;
-            transition: 0.5s;
+            color: #4a4a4a; font-family: 'Poppins', sans-serif; overflow-x: hidden;
         }
 
         /* --- NAVIGATION --- */
@@ -30,113 +27,149 @@
             display: flex; flex-direction: column; gap: 15px; z-index: 1000;
         }
         .nav-icon {
-            width: 55px; height: 55px; background: var(--glass);
-            backdrop-filter: blur(10px); border-radius: 12px;
+            width: 60px; height: 60px; background: var(--glass);
+            backdrop-filter: blur(15px); border-radius: 18px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 22px; cursor: pointer; border: 1px solid white; transition: 0.3s;
+            font-size: 26px; cursor: pointer; border: 2px solid white; transition: 0.3s;
         }
-        .nav-icon:hover { transform: scale(1.1); background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .nav-icon:hover { transform: scale(1.1) rotate(5deg); background: white; }
 
         /* --- SECTIONS --- */
-        section { min-height: 100vh; padding: 40px 100px; display: none; }
-        section.active { display: block; animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        section { min-height: 100vh; display: none; }
+        section.active { display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fadeIn 0.8s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- CATCHER GAME --- */
+        /* --- HOME HERO --- */
+        .hero-title { font-family: 'Dancing Script', cursive; font-size: 5rem; color: var(--accent-pink); text-shadow: 2px 2px white; }
+        .slot-container {
+            background: white; padding: 30px; border-radius: 30px; border: 4px solid var(--baby-pink);
+            max-width: 500px; width: 90%; margin-top: 30px; text-align: center;
+        }
+        #reminder-display { font-weight: 600; font-size: 1.2rem; min-height: 50px; color: #ff4d6d; margin-bottom: 20px; }
+
+        /* --- HORIZONTAL MAP --- */
+        #map { 
+            display: none; flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory; 
+            background: linear-gradient(90deg, #fef9d7, #fbc2eb); padding: 0;
+        }
+        #map.active { display: flex; }
+        .map-page {
+            min-width: 100vw; height: 100vh; scroll-snap-align: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative; padding: 40px; text-align: center;
+        }
+        .map-card {
+            background: var(--glass); backdrop-filter: blur(20px);
+            padding: 40px; border-radius: 40px; border: 3px solid white;
+            max-width: 700px; z-index: 10; box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+        }
+        .typewriter { overflow: hidden; border-right: .15em solid var(--accent-pink); white-space: nowrap; margin: 0 auto; letter-spacing: .05em; animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite; }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-pink); } }
+
+        /* --- LOVE CATCHER GAME --- */
         #game-box { 
-            width: 100%; max-width: 700px; height: 450px; margin: 20px auto;
-            background: white; border-radius: 25px; overflow: hidden;
-            border: 4px solid var(--baby-pink); position: relative;
+            width: 90%; max-width: 800px; height: 500px; margin: 20px auto;
+            background: white; border-radius: 35px; border: 6px solid var(--baby-pink);
+            position: relative; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+        }
+        #combo-ui { position: absolute; top: 20px; right: 30px; font-size: 2.5rem; font-weight: 900; color: var(--accent-pink); }
+        #super-reward { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            font-size: 3rem; font-weight: 900; color: #ff4d6d; text-align: center;
+            z-index: 100; transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255,255,255,0.9); padding: 30px; border-radius: 30px; width: 80%; pointer-events: none;
         }
         canvas { width: 100%; height: 100%; cursor: none; }
 
-        /* --- MEMORY VAULT --- */
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 600px; margin: 0 auto; }
-        .card {
-            height: 110px; background: white; border-radius: 15px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; text-align: center; padding: 10px; border: 2px solid var(--baby-pink);
+        /* --- FINAL TRIBUTE --- */
+        .tribute-box {
+            max-width: 800px; width: 90%; background: white; padding: 50px;
+            border-radius: 40px; border: 4px solid var(--baby-pink); text-align: center;
+            line-height: 1.8; font-size: 1.1rem;
         }
-        .card.hidden { background: var(--baby-pink); color: transparent; border: 2px solid white; }
-        #hint-box { text-align: center; margin-bottom: 15px; color: #ff4d6d; font-weight: 600; min-height: 20px; }
-
-        /* --- MAP SCENES --- */
-        .map-card {
-            background: white; border-radius: 25px; padding: 30px; margin-bottom: 30px;
-            text-align: center; border: 2px solid var(--baby-pink); position: relative; overflow: hidden;
-        }
-        .floating { animation: float 3s infinite ease-in-out; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .heart-float { font-size: 4rem; animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
         /* --- UI COMPONENTS --- */
-        .pink-btn {
-            background: var(--accent-pink); border: none; padding: 12px 25px;
-            border-radius: 25px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s;
-        }
-        .pink-btn:hover { background: #ff4d6d; }
-        #toast {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: white; padding: 10px 25px; border-radius: 30px;
-            border: 2px solid var(--accent-pink); opacity: 0; transition: 0.4s; z-index: 2000;
-        }
-        #toast.show { opacity: 1; bottom: 40px; }
+        .btn { background: var(--accent-pink); color: white; border: none; padding: 15px 35px; border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: #ff4d6d; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255,77,109,0.3); }
+        #toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: white; padding: 15px 35px; border-radius: 50px; border: 3px solid var(--accent-pink); font-weight: bold; z-index: 2000; transition: 0.5s; }
+        #toast.show { bottom: 40px; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="nav-icon" title="Home" onclick="showSection('home')">🏠</div>
-        <div class="nav-icon" title="Map" onclick="showSection('map')">🗺️</div>
-        <div class="nav-icon" title="Vault" onclick="showSection('vault')">🔐</div>
-        <div class="nav-icon" title="Catcher" onclick="showSection('game')">🎮</div>
-        <div class="nav-icon" title="Mood" onclick="toggleMood()">🌙</div>
+        <div class="nav-icon" onclick="showSection('home')">🏠</div>
+        <div class="nav-icon" onclick="showSection('map')">🗺️</div>
+        <div class="nav-icon" onclick="showSection('game')">🎮</div>
+        <div class="nav-icon" onclick="showSection('tribute')">❤️</div>
     </nav>
 
     <div id="toast"></div>
 
     <section id="home" class="active">
-        <h1 style="color: var(--accent-pink); font-size: 3rem;">Hellooo Tanisha ✨</h1>
-        <p>Your private space, built with love for International Women's Day.</p>
-        <div style="background: white; padding: 30px; border-radius: 25px; margin-top: 30px; text-align: center; border: 2px solid var(--baby-pink);">
-            <div id="reminder-text" style="font-size: 1.2rem; font-weight: bold; margin-bottom: 15px;">You are amazing.</div>
-            <button class="pink-btn" onclick="spinReminder()">Need a Reminder?</button>
-        </div>
-    </section>
-
-    <section id="game">
-        <h2 style="text-align: center;">Love Catcher</h2>
-        <p style="text-align: center; margin-bottom: 10px;">Catch the stars for a surprise!</p>
-        <div id="game-box">
-            <canvas id="loveCanvas"></canvas>
+        <h1 class="hero-title">Tanisha</h1>
+        <p>My lil penguin, my world, my peace.</p>
+        <div class="slot-container">
+            <div id="reminder-display">Ready to feel loved?</div>
+            <button class="btn" onclick="spinReminder()">Need a Reminder?</button>
         </div>
     </section>
 
     <section id="map">
-        <div class="map-card">
-            <h3 style="color: var(--accent-pink);">The Cinema 🍿</h3>
-            <p>6th Jan 2024: The day everything started.</p>
+        <div class="map-page">
+            <div class="map-card">
+                <h2 style="color: var(--accent-pink); font-size: 2.5rem; margin-bottom: 20px;">The Cinema 🍿</h2>
+                <p><b>6th Jan 2024:</b> This is where the magic started. I remember seeing you and realizing my life was about to change forever. Our first hang out, our first spark. You were the star before the movie even started.</p>
+            </div>
+            <div style="margin-top: 40px; font-weight: bold; color: var(--accent-pink); animation: bounce 2s infinite;">Scroll Sideways →</div>
         </div>
-        <div class="map-card" style="background: #1a1a2e; color: white;">
-            <h3>The Viewpoint ✨</h3>
-            <p>16th Aug 2024: Our first kiss under the stars.</p>
+
+        <div class="map-page" style="background: var(--deep-night); color: white;">
+            <div class="map-card" style="background: rgba(0,0,0,0.5); border-color: var(--accent-pink);">
+                <h2 style="color: var(--accent-pink); font-size: 2.5rem; margin-bottom: 20px;">The Viewpoint ✨</h2>
+                <p><b>16th Aug 2024:</b> Under the vast night sky, with the city lights glowing in front of us... I finally got to kiss the most beautiful girl in the world. It felt like time stopped just for us.</p>
+            </div>
         </div>
-        <div class="map-card">
-            <h3 class="floating">The Car 🚗</h3>
-            <p>Our favorite spot to cuddle and feel safe.</p>
+
+        <div class="map-page">
+            <div class="map-card">
+                <h2 style="color: #d4a017; font-size: 2.5rem; margin-bottom: 20px;">Our Safe Space 🚗</h2>
+                <p><b>The Car:</b> It doesn't matter where we are, as long as we're in the car. It’s our favorite spot to just cuddle, talk for hours, and feel safe in our arms and our own little world. Just us, and a whole lot of love.</p>
+            </div>
         </div>
     </section>
 
-    <section id="vault">
-        <h2 style="text-align: center;">Memory Vault</h2>
-        <div id="hint-box"></div>
-        <div class="grid" id="memoryGrid"></div>
+    <section id="game">
+        <h2 style="margin-bottom: 10px;">The Love Catcher</h2>
+        <p>Catch 10 stars without missing for the SUPER REWARD!</p>
+        <div id="game-box">
+            <div id="combo-ui">Combo: 0</div>
+            <div id="super-reward">YOU ARE THE BEST WOMAN EVER! 💖</div>
+            <canvas id="loveCanvas"></canvas>
+        </div>
+    </section>
+
+    <section id="tribute">
+        <div class="tribute-box">
+            <span class="heart-float">💖</span>
+            <h2 style="font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--accent-pink); margin-bottom: 20px;">To My Tanisha</h2>
+            <p>
+                Tanisha, words will never be enough to scream how much I love you. You are my anchor, my peace, and the most beautiful part of my day. Seeing the woman you are becoming so strong, so kind, and so driven and ambitious makes me glow with a pride I can't even describe. You handle life with such grace, and every day I spend by your side, I realize how lucky I am to call you mine. You aren't just my girl; you're my best friend and my lil penguin my everything. No matter where life takes us, remember that I am always gonna be right here loving you always, cheering you on, and loving you more then words can ever say. You are my perfect woman, forever and imsorry i was a lil late to this mera dil i hope you forgive me for that i love you Tanisha wallahi.
+            </p>
+            <p style="margin-top: 20px; font-weight: 600;">Always yours Rafay, Your lil Starfishy.</p>
+        </div>
     </section>
 
     <script>
         function showSection(id) {
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const target = document.getElementById(id);
+            target.classList.add('active');
             if(id === 'game') initGame();
+            window.scrollTo(0,0);
         }
 
         function showToast(msg) {
@@ -145,28 +178,64 @@
             setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        // --- CATCHER GAME LOGIC ---
+        // --- 10+ NON-REPEATING REMINDERS ---
+        const notes = [
+            "You are literally perfect in a world of fakeness.",
+            "I love how you call me your starfishy and your lil baby.",
+            "You are the strongest most amazing incredible perfectly beautiful woman my love.",
+            "Your kindness makes the world a better place.",
+            "I am so incredibly proud of the woman you're becoming.",
+            "You handle every challenge with such grace.",
+            "You are my literal peace in a chaotic world.",
+            "Your smile is the best part of my entire day.",
+            "You make every movie theater trip feel like a dream.",
+            "I love you more then words can ever express.",
+            "You are enough, exactly as you are.",
+            "You are the most resilient person I know."
+        ];
+        let lastNote = "";
+        function spinReminder() {
+            let pick = notes[Math.floor(Math.random() * notes.length)];
+            while(pick === lastNote) pick = notes[Math.floor(Math.random() * notes.length)];
+            lastNote = pick;
+            document.getElementById('reminder-display').innerText = pick;
+        }
+
+        // --- GAME LOGIC ---
+        let combo = 0;
         function initGame() {
             const canvas = document.getElementById('loveCanvas');
             const ctx = canvas.getContext('2d');
             canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
-            let stars = []; let playerX = canvas.width / 2;
-            const msgs = ["You're perfect!", "I love you sm, my lil starfish!", "Smart & Beautiful", "My peace my heart", "you make me so proud my love"];
+            let stars = []; let px = canvas.width / 2;
+            const compliments = ["Stunning!", "My Love!", "Starfishy!", "Perfect!", "My World!", "you make me so proud", "i love you" ];
 
-            canvas.onmousemove = (e) => { playerX = e.offsetX; };
-            function spawn() { stars.push({ x: Math.random() * canvas.width, y: -20, s: 3 + Math.random() * 2 }); }
-            const timer = setInterval(() => { if(document.getElementById('game').classList.contains('active')) spawn(); else clearInterval(timer); }, 1000);
+            canvas.onmousemove = (e) => px = e.offsetX;
+            function spawn() { stars.push({ x: Math.random() * canvas.width, y: -20, s: 5 + Math.random() * 2 }); }
+            const gTimer = setInterval(() => { if(document.getElementById('game').classList.contains('active')) spawn(); else clearInterval(gTimer); }, 800);
 
             function draw() {
                 if(!document.getElementById('game').classList.contains('active')) return;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.font = "35px Arial";
-                ctx.fillText("🧺", playerX - 20, canvas.height - 30);
+                ctx.font = "40px Arial";
+                ctx.fillText("🧺", px - 25, canvas.height - 30);
+                
                 stars.forEach((s, i) => {
                     s.y += s.s; ctx.fillText("⭐", s.x, s.y);
-                    if(s.y > canvas.height - 70 && Math.abs(s.x - playerX) < 40) {
-                        showToast(msgs[Math.floor(Math.random()*msgs.length)]);
+                    if(s.y > canvas.height - 70 && Math.abs(s.x - px) < 45) {
+                        combo++;
+                        document.getElementById('combo-ui').innerText = "Combo: " + combo;
+                        showToast(compliments[Math.floor(Math.random()*compliments.length)]);
                         stars.splice(i, 1);
+                        if(combo === 10) {
+                            const reward = document.getElementById('super-reward');
+                            reward.style.transform = "translate(-50%, -50%) scale(1)";
+                            setTimeout(() => { reward.style.transform = "translate(-50%, -50%) scale(0)"; combo = 0; document.getElementById('combo-ui').innerText = "Combo: 0"; }, 4000);
+                        }
+                    } else if (s.y > canvas.height) { 
+                        if(combo > 0) showToast("Combo Reset! 💔");
+                        combo = 0; document.getElementById('combo-ui').innerText = "Combo: 0"; 
+                        stars.splice(i, 1); 
                     }
                 });
                 requestAnimationFrame(draw);
@@ -174,42 +243,11 @@
             draw();
         }
 
-        // --- REMINDER SLOT ---
-        function spinReminder() {
-            const r = ["You're resilient.", "You're my lil penguin.", "You're gorgeous and beautiful.", "You're the best part of my day."];
-            document.getElementById('reminder-text').innerText = r[Math.floor(Math.random()*r.length)];
-        }
-
-        // --- VAULT LOGIC ---
-        const pairs = [
-            {q: "First Met", a: "6th Jan 2024", h: "the day that changed everything..."},
-            {q: "First Kiss", a: "16th Aug 2024", h: "a very Hot August night;)..."},
-            {q: "Anniversary", a: "8th Oct 2023", h: "our day..."},
-            {q: "Her Bday", a: "23rd Feb", h: "my fav month February bcz..."},
-            {q: "Fav Spot", a: "The Car", h: "our fav private spot for cuddles and love..."}
-        ];
-        let first = null;
-        function initMemory() {
-            const g = document.getElementById('memoryGrid');
-            let cards = []; pairs.forEach(p => { cards.push({v: p.q, p: p.a, h: p.h}); cards.push({v: p.a, p: p.q, h: p.h}); });
-            cards.sort(() => Math.random() - 0.5).forEach(c => {
-                const d = document.createElement('div'); d.className = 'card hidden'; d.innerText = c.v;
-                d.onclick = () => {
-                    d.classList.remove('hidden');
-                    if(!first) { first = d; document.getElementById('hint-box').innerText = "Hint: " + c.h; }
-                    else {
-                        if(first.innerText === c.p) { first = null; showToast("Matched!"); }
-                        else { setTimeout(() => { d.classList.add('hidden'); first.classList.add('hidden'); first = null; }, 800); }
-                    }
-                };
-                g.appendChild(d);
-            });
-        }
-        initMemory();
-
-        function toggleMood() {
-            document.body.style.filter = document.body.style.filter === 'invert(0.9)' ? 'invert(0)' : 'invert(0.9)';
-        }
+        // Initial Layout Adjustment
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('loveCanvas');
+            canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+        });
     </script>
 </body>
 </html>
