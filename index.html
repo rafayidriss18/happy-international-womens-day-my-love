@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Tanisha | My World</title>
+    <style>
+        :root {
+            --pink: #ff4d6d;
+            --dark: #0f0c29;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            gap: 15px;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 8px 15px;
+            transition: 0.3s;
+        }
+
+        nav button:hover { color: var(--pink); }
+
+        /* Sections */
+        section { min-height: 100vh; padding: 100px 20px; display: none; }
+        section.active { display: block; animation: fadeIn 0.8s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Home Hero */
+        .hero { text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .hero h1 { font-size: 4rem; margin-bottom: 20px; background: linear-gradient(to right, #ff4d6d, #ff8fa3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Love Catcher Game */
+        #game-container { position: relative; width: 100%; max-width: 800px; height: 500px; margin: 0 auto; background: var(--glass); border-radius: 20px; overflow: hidden; }
+        canvas { width: 100%; height: 100%; cursor: none; }
+
+        /* Memory Vault */
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 800px; margin: 0 auto; }
+        .card { height: 100px; background: var(--pink); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; text-align: center; padding: 5px; }
+        .card.hidden { background: var(--glass); color: transparent; }
+
+        /* Adventure Map */
+        .map-scene { height: 60vh; margin: 20px auto; max-width: 900px; background: var(--glass); border-radius: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid var(--pink); }
+        
+        /* Toast Notification */
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--pink); padding: 15px 30px; border-radius: 50px; opacity: 0; transition: 0.5s; z-index: 2000; box-shadow: 0 0 20px var(--pink); }
+        #toast.show { opacity: 1; bottom: 50px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <button onclick="showSection('home')">Home</button>
+        <button onclick="showSection('catcher')">Catcher</button>
+        <button onclick="showSection('memory')">Vault</button>
+        <button onclick="showSection('map')">Our Map</button>
+    </nav>
+
+    <div id="toast">I love you, lil starfish!</div>
+
+    <section id="home" class="active hero">
+        <h1>For Tanisha</h1>
+        <p>International Women's Day 2026</p>
+        <p style="margin-top: 20px; opacity: 0.7;">This sanctuary was built just for you. Explore the tabs above.</p>
+    </section>
+
+    <section id="catcher">
+        <h2 style="text-align: center; margin-bottom: 20px;">Catch the Love!</h2>
+        <div id="game-container">
+            <canvas id="loveCanvas"></canvas>
+        </div>
+    </section>
+
+    <section id="memory">
+        <h2 style="text-align: center; margin-bottom: 20px;">The Memory Vault</h2>
+        <div class="grid" id="memoryGrid"></div>
+    </section>
+
+    <section id="map">
+        <div class="map-scene">
+            <h3>The Cinema</h3>
+            <p>6th Jan 2024 - Where we first met and hung out.</p>
+        </div>
+        <div class="map-scene">
+            <h3>The Viewpoint</h3>
+            <p>16th Aug 2024 - City lights, stars, and our first kiss.</p>
+        </div>
+        <div class="map-scene">
+            <h3>The Car</h3>
+            <p>Our favorite spot to just cuddle and love each other.</p>
+        </div>
+    </section>
+
+    <script>
+        // --- Core Navigation ---
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(id === 'catcher') initCatcher();
+            if(id === 'memory') initMemory();
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // --- Love Catcher Game ---
+        function initCatcher() {
+            const canvas = document.getElementById('loveCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            let hearts = [];
+            let playerX = canvas.width / 2;
+            const compliments = ["You're breathtaking", "My lil starfish", "8K Soul", "Smartest woman ever", "My peace"];
+
+            canvas.onmousemove = (e) => playerX = e.offsetX;
+
+            function spawn() {
+                hearts.push({ x: Math.random() * canvas.width, y: -20, s: 2 + Math.random() * 3 });
+            }
+            setInterval(spawn, 1000);
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.font = "30px Arial";
+                ctx.fillText("❤️", playerX - 15, canvas.height - 30);
+
+                hearts.forEach((h, i) => {
+                    h.y += h.s;
+                    ctx.fillText("⭐", h.x, h.y);
+                    if(h.y > canvas.height - 60 && Math.abs(h.x - playerX) < 30) {
+                        showToast(compliments[Math.floor(Math.random()*compliments.length)]);
+                        hearts.splice(i, 1);
+                    }
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // --- Memory Vault ---
+        function initMemory() {
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = '';
+            const data = [
+                ["First Met", "6th Jan 2024"], ["First Kiss", "16th Aug 2024"],
+                ["Anniversary", "8th Oct 2023"], ["My Bday", "18th June"],
+                ["Her Bday", "23rd Feb"], ["Fav Spot", "The Car"]
+            ].flat();
+            
+            data.sort(() => Math.random() - 0.5).forEach(val => {
+                const card = document.createElement('div');
+                card.className = 'card hidden';
+                card.innerText = val;
+                card.onclick = () => {
+                    card.classList.toggle('hidden');
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        // --- Easter Egg ---
+        let keys = "";
+        window.onkeydown = (e) => {
+            keys += e.key;
+            if(keys.includes("starfishy")) {
+                showToast("SHHHH... I LOVE YOU MOST!");
+                keys = "";
+                document.body.style.background = "linear-gradient(pink, purple)";
+            }
+        };
+    </script>
+</body>
+</html>
