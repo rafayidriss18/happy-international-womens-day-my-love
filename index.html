@@ -56,17 +56,19 @@
 
         /* --- GAME --- */
         #game-box { width: 100%; max-width: 750px; height: 450px; background: white; border-radius: 30px; border: 5px solid var(--baby-pink); position: relative; overflow: hidden; }
-        #combo-ui { position: absolute; top: 15px; right: 20px; font-size: 2rem; font-weight: 900; color: var(--accent-pink); }
+        .game-stats { position: absolute; top: 15px; right: 20px; text-align: right; z-index: 20; }
+        #combo-ui { font-size: 1.8rem; font-weight: 900; color: var(--accent-pink); }
+        #compliment-count { font-size: 1rem; color: #777; font-weight: bold; }
         canvas { width: 100%; height: 100%; cursor: crosshair; }
-        #super-reward { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 2.2rem; font-weight: 900; color: #ff4d6d; text-align: center; background: white; padding: 25px; border-radius: 20px; width: 85%; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; z-index: 10; border: 4px solid var(--baby-pink); }
+        #super-reward { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 2.2rem; font-weight: 900; color: #ff4d6d; text-align: center; background: white; padding: 25px; border-radius: 20px; width: 85%; transition: 0.5s; pointer-events: none; z-index: 10; border: 4px solid var(--baby-pink); }
 
         /* --- TRIBUTE --- */
         .tribute-box { max-width: 750px; background: white; padding: 40px; border-radius: 35px; border: 4px solid var(--baby-pink); text-align: center; line-height: 1.8; }
 
         /* --- UI ELEMENTS --- */
         .btn { background: var(--accent-pink); color: white; border: none; padding: 12px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        #toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: white; padding: 12px 30px; border-radius: 50px; border: 3px solid var(--accent-pink); font-weight: bold; z-index: 3000; transition: 0.5s; }
-        #toast.show { bottom: 30px; }
+        #toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: white; padding: 15px 35px; border-radius: 50px; border: 3px solid var(--accent-pink); font-weight: bold; z-index: 3000; transition: 0.5s; text-align: center; min-width: 250px; }
+        #toast.show { bottom: 40px; }
     </style>
 </head>
 <body>
@@ -121,7 +123,10 @@
     <section id="game">
         <h2 style="margin-bottom: 10px;">Love Catcher</h2>
         <div id="game-box">
-            <div id="combo-ui">Combo: 0</div>
+            <div class="game-stats">
+                <div id="combo-ui">Combo: 0</div>
+                <div id="compliment-count">Compliments Collected: 0</div>
+            </div>
             <div id="super-reward">YOU ARE THE BEST WOMAN EVER! 💖</div>
             <canvas id="loveCanvas"></canvas>
         </div>
@@ -152,16 +157,22 @@
         function showToast(msg) {
             const t = document.getElementById('toast');
             t.innerText = msg; t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2500);
+            setTimeout(() => t.classList.remove('show'), 2000);
         }
 
         const notes = [
-            "You are literally perfect.", "I love how you call me your starfishy and your lil baby.",
-            "You are the strongest most amazing incredible and perfectly beautiful woman my woman.", "Your kindness is my fav part of you.",
-            "I'm so proud of the woman you're becoming Tanisha.", "You handle life with such grace.",
-            "You are my literal peace.", "Your smile is the best part of my day.",
-            "I love you more then words can ever express.", "You are enough, exactly as you are."
+            "You are literally perfect!", 
+            "You are so beautiful!", 
+            "The most amazing woman!", 
+            "Perfect in every way!", 
+            "My beautiful lil penguin!", 
+            "I'm so proud of you Tanisha!", 
+            "You are my literal peace!", 
+            "I love you more than anything!", 
+            "You are enough, exactly as you are!",
+            "My 8K perfection!"
         ];
+
         function spinReminder() {
             document.getElementById('reminder-display').innerText = notes[Math.floor(Math.random() * notes.length)];
         }
@@ -172,6 +183,7 @@
             {q: "Anniversary", a: "8th Oct 2023", h: "The day our story began..."},
             {q: "Fav Spot", a: "The Car", h: "our fav priv spot..."}
         ];
+
         let first = null, lock = false;
         function initVault() {
             const g = document.getElementById('vault-grid'); g.innerHTML = '';
@@ -192,11 +204,12 @@
             });
         }
 
-        let combo = 0, timerId = null;
+        let combo = 0, totalCompliments = 0, timerId = null;
         function initGame() {
             const canvas = document.getElementById('loveCanvas'); const ctx = canvas.getContext('2d');
             canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
             let stars = [], px = canvas.width / 2;
+            
             canvas.onmousemove = (e) => px = e.offsetX;
             canvas.ontouchmove = (e) => { px = e.touches[0].clientX - canvas.getBoundingClientRect().left; e.preventDefault(); };
 
@@ -211,8 +224,19 @@
                 stars.forEach((s, i) => {
                     s.y += s.s; ctx.fillText(combo >= 15 ? "💖" : "⭐", s.x, s.y);
                     if(s.y > canvas.height - 70 && Math.abs(s.x - px) < 45) {
-                        combo++; document.getElementById('combo-ui').innerText = "Combo: " + combo; stars.splice(i, 1);
-                        if(combo === 10) { document.getElementById('super-reward').style.transform = "translate(-50%, -50%) scale(1)"; setTimeout(() => { document.getElementById('super-reward').style.transform = "translate(-50%, -50%) scale(0)"; }, 3500); }
+                        combo++; 
+                        totalCompliments++;
+                        document.getElementById('combo-ui').innerText = "Combo: " + combo;
+                        document.getElementById('compliment-count').innerText = "Compliments Collected: " + totalCompliments;
+                        
+                        // THIS PART FLASHES THE REAL COMPLIMENTS
+                        showToast(notes[Math.floor(Math.random() * notes.length)]);
+                        
+                        stars.splice(i, 1);
+                        if(combo === 10) { 
+                            document.getElementById('super-reward').style.transform = "translate(-50%, -50%) scale(1)"; 
+                            setTimeout(() => { document.getElementById('super-reward').style.transform = "translate(-50%, -50%) scale(0)"; }, 3500); 
+                        }
                     } else if (s.y > canvas.height) { combo = 0; document.getElementById('combo-ui').innerText = "Combo: 0"; stars.splice(i, 1); }
                 });
                 requestAnimationFrame(draw);
